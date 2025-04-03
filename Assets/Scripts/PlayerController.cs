@@ -24,6 +24,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        MoveCharacter();
+    }
+
+    private void MoveCharacter()
+    {
         float forwardInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -40,6 +45,5 @@ public class PlayerController : MonoBehaviour
         }
         hipsRigidBody.AddForce(forwardInput * speed * moveDirForward);
         hipsRigidBody.AddForce(horizontalInput * speed * moveDirHorizontal);
-
     }
 }
