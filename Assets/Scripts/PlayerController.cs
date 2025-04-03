@@ -1,0 +1,45 @@
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float speed = 400;
+    public float jumpForce = 2000;
+
+    public Transform cam;
+
+    public GameObject hips;
+
+    public ConfigurableJoint hipJoint;
+    public Rigidbody hipsRigidBody;
+
+    public float fallMultiplier = 2.0f;
+
+
+    public bool isGrounded;
+    void Start()
+    {
+        hipsRigidBody = hips.GetComponent<Rigidbody>();
+    }
+
+    void FixedUpdate()
+    {
+        float forwardInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis("Horizontal");
+
+        Vector3 direction = new Vector3(0f, 0f, forwardInput).normalized;
+        float targetAngle = cam.eulerAngles.y;
+
+        Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        Vector3 moveDirHorizontal = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.right;
+        hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
+        float jumpInput = Input.GetAxis("Jump");
+        if (jumpInput > 0)
+        {
+            hipsRigidBody.AddForce(new Vector3(0, jumpForce, 0));
+        }
+        hipsRigidBody.AddForce(forwardInput * speed * moveDirForward);
+        hipsRigidBody.AddForce(horizontalInput * speed * moveDirHorizontal);
+
+    }
+}
