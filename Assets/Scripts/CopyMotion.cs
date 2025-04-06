@@ -9,6 +9,10 @@ public class CopyMotion : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     Quaternion startRot;
 
+    public bool shouldStartRot;
+
+    public bool localRotation;
+
     void Start()
     {
         cj = GetComponent<ConfigurableJoint>();
@@ -17,7 +21,21 @@ public class CopyMotion : MonoBehaviour
 
     void Update()
     {
-        if (!mirror) cj.targetRotation = targetLimb.localRotation * startRot;
-        else cj.targetRotation = Quaternion.Inverse(targetLimb.localRotation) * startRot;
+        Quaternion targetRot = targetLimb.rotation;
+        if (localRotation)
+        {
+            targetRot = targetLimb.localRotation;
+        }
+
+        if (shouldStartRot)
+        {
+            if (!mirror) cj.targetRotation = targetRot * startRot;
+            else cj.targetRotation = Quaternion.Inverse(targetRot) * startRot;
+        }
+        else
+        {
+            if (!mirror) cj.targetRotation = targetRot;
+            else cj.targetRotation = Quaternion.Inverse(targetRot);
+        }
     }
 }
