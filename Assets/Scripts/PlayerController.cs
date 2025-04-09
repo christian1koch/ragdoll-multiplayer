@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,17 +14,35 @@ public class PlayerController : MonoBehaviour
     public ConfigurableJoint hipJoint;
     public Rigidbody hipsRigidBody;
 
+    public Rigidbody rightHandRb;
+
+    public float punchSpeed = 20.0f;
+
     public float fallMultiplier = 2.0f;
 
+    public Animator targetAnimator;
 
     public bool isGrounded;
     void Start()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
+
+
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            StartCoroutine(PunchCoroutine());
+            float targetAngle = cam.eulerAngles.y;
+            Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            rightHandRb.AddForce(punchSpeed * moveDirForward);
+        }
+    }
     void FixedUpdate()
     {
+
         MoveCharacter();
     }
 
@@ -43,7 +62,26 @@ public class PlayerController : MonoBehaviour
         {
             hipsRigidBody.AddForce(new Vector3(0, jumpForce, 0));
         }
+        if (forwardInput == 0)
+        {
+            targetAnimator.SetBool("isWalking", false);
+        }
+        else
+        {
+            targetAnimator.SetBool("isWalking", true);
+        }
         hipsRigidBody.AddForce(forwardInput * speed * moveDirForward);
         hipsRigidBody.AddForce(horizontalInput * speed * moveDirHorizontal);
+
+    }
+    private IEnumerator PunchCoroutine()
+    {
+        // set the CollissionTest from the right hand to true
+        rightHandRb.GetComponent<ColissionTest>().isPunching = true;
+        // then wait 0.5 seconds
+        yield return new WaitForSeconds(0.5f);
+
+        rightHandRb.GetComponent<ColissionTest>().isPunching = false;
+        // then set the CollissionTest from the right hand to false
     }
 }
