@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ProjectileShooter : MonoBehaviour
+public class KatonBall : MonoBehaviour, IJutsu
 {
     [Header("Projectile Settings")]
     [Tooltip("Drag the Projectile prefab here.")]
@@ -13,21 +13,14 @@ public class ProjectileShooter : MonoBehaviour
     [Tooltip("Reference to the camera transform.")]
     public Transform cam;
 
-    [Tooltip("Reference to the player GameObject (or player transform).")]
-    public Transform player;
+    public string Name => "KatonBall";
+    public int JutsuId => 2;
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            ShootProjectile();
-        }
-    }
 
-    void ShootProjectile()
+    public void CastJutsu()
     {
         // 1. Determine spawn position (at the player’s position, or offset if desired).
-        Vector3 spawnPos = player.position;
+        Vector3 spawnPos = transform.position;
 
         // 2. Determine spawn rotation so that the projectile faces the same direction as the camera.
         Quaternion spawnRot = Quaternion.LookRotation(cam.forward);
