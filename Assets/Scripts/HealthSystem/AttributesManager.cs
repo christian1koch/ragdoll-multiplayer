@@ -4,7 +4,12 @@ public class AttributesManager : MonoBehaviour
 {
 
     public int health;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public int mana;
+
+    public int stamina;
+
+
     public bool shouldDestroyOnColission = false;
     public void TakeDamage(int amount)
     {

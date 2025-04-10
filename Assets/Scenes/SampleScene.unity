@@ -473,6 +473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  mana: 0
+  stamina: 0
   shouldDestroyOnColission: 0
 --- !u!136 &639343052
 CapsuleCollider:
@@ -810,7 +812,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1282839071}
-  - component: {fileID: 1282839072}
   - component: {fileID: 1282839074}
   - component: {fileID: 1282839073}
   - component: {fileID: 1282839075}
@@ -838,21 +839,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4419512080295103245}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &1282839072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282839070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e744ed5e143524c5982da3fb8579527f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 942562058276386324, guid: 1c6db7f3fb3c5429a800d27da91a8b60, type: 3}
-  shootForce: 20
-  cam: {fileID: 330585546}
 --- !u!153 &1282839073
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -994,6 +980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884626e1110d84e7faa231dd9af7360f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAttributes: {fileID: 4419512080295103247}
 --- !u!114 &1282839076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,6 +996,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 942562058276386324, guid: 1c6db7f3fb3c5429a800d27da91a8b60, type: 3}
   shootForce: 20
   cam: {fileID: 330585546}
+  manaValue: 30
 --- !u!114 &1282839077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1024,6 +1012,7 @@ MonoBehaviour:
   isSelected: 0
   dotonShieldObject: {fileID: 993231203109758677, guid: 56e14eb41c61e4bd3a17966a63205e59, type: 3}
   cameraTransform: {fileID: 330585546}
+  manaValue: 20
 --- !u!4 &1285633859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6216398183866726781, guid: 5866bdb96f38f4e1e91c360a624f31e7, type: 3}
@@ -2455,6 +2444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4419512080295103245}
   - component: {fileID: 4419512080295103246}
+  - component: {fileID: 4419512080295103247}
   m_Layer: 0
   m_Name: Armature
   m_TagString: Untagged
@@ -3294,6 +3284,22 @@ MonoBehaviour:
   fallMultiplier: 20
   targetAnimator: {fileID: 1227138535}
   isGrounded: 0
+--- !u!114 &4419512080295103247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2867254200205492551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cdf400450b4488c90462cddb8bfebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  mana: 100
+  stamina: 100
+  shouldDestroyOnColission: 0
 --- !u!4 &4532883616337702348
 Transform:
   m_ObjectHideFlags: 0

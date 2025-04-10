@@ -3,6 +3,8 @@ public interface IJutsu
     string Name { get; }
     int JutsuId { get; }
 
+    int ManaValue { get; }
+
     // TODO: Add Chakra and BaseDamage
     void CastJutsu();
 

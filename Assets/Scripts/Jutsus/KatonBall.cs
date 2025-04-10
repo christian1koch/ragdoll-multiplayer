@@ -16,6 +16,9 @@ public class KatonBall : MonoBehaviour, IJutsu
     public string Name => "KatonBall";
     public int JutsuId => 2;
 
+    public int manaValue;
+
+    public int ManaValue => manaValue;
 
     public void CastJutsu()
     {

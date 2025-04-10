@@ -11,6 +11,10 @@ public class Doton : MonoBehaviour, IJutsu
     public string Name => "Doton";
     public int JutsuId => 1;
 
+    public int manaValue;
+
+    public int ManaValue => manaValue;
+
 
     private void CastJutsu()
     {

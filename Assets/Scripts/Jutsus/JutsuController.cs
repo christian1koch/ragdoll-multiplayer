@@ -6,6 +6,8 @@ public class JutsuController : MonoBehaviour
     private IJutsu[] jutsus;
     private int selectedJutsuIndex = 0;
 
+    public AttributesManager playerAttributes;
+
     private void Awake()
     {
         // Get all components on this GameObject that implement the IJutsu interface
@@ -35,14 +37,25 @@ public class JutsuController : MonoBehaviour
 
     private void CastJutsu()
     {
-        if (selectedJutsuIndex < jutsus.Length)
+        Debug.Log("mana " + playerAttributes.mana);
+        if (selectedJutsuIndex >= jutsus.Length)
         {
-            IJutsu jutsu = jutsus[selectedJutsuIndex];
-            if (jutsu != null)
-            {
-                jutsu.CastJutsu();
-            }
+            return;
         }
+
+        IJutsu jutsu = jutsus[selectedJutsuIndex];
+        if (jutsu == null)
+        {
+            return;
+        }
+        if (playerAttributes.mana < jutsu.ManaValue)
+        {
+            Debug.Log("Not Enough Mana!");
+            return;
+        }
+        jutsu.CastJutsu();
+        playerAttributes.mana -= jutsu.ManaValue;
+
     }
 
     private void SelectJutsu(int index)
