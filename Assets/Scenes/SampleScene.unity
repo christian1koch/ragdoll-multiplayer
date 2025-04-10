@@ -613,9 +613,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20cdf400450b4488c90462cddb8bfebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  maxMana: 100
+  maxStamina: 100
   health: 100
   mana: 0
   stamina: 0
+  healthRegen: 0.1
+  manaRegen: 0.1
+  staminaRegen: 10
   shouldDestroyOnColission: 0
 --- !u!136 &639343052
 CapsuleCollider:
@@ -3949,9 +3955,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20cdf400450b4488c90462cddb8bfebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  maxMana: 100
+  maxStamina: 100
   health: 100
   mana: 100
   stamina: 100
+  healthRegen: 0.1
+  manaRegen: 0.5
+  staminaRegen: 10
   shouldDestroyOnColission: 0
 --- !u!4 &4532883616337702348
 Transform:

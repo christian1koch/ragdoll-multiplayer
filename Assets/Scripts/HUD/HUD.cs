@@ -17,8 +17,8 @@ public class HUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        health.SetText("HP " + playerAttributes.health);
-        mana.SetText("MANA " + playerAttributes.mana);
-        stamina.SetText("STAMINA " + playerAttributes.stamina);
+        health.SetText("HP " + Mathf.FloorToInt(playerAttributes.health));
+        mana.SetText("MANA " + Mathf.FloorToInt(playerAttributes.mana));
+        stamina.SetText("STAMINA " + Mathf.FloorToInt(playerAttributes.stamina));
     }
 }
