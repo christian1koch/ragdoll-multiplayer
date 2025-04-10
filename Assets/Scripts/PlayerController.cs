@@ -26,7 +26,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
+        // Hide the cursor
+        Cursor.visible = false;
 
+        // Optionally lock the cursor to the center of the screen
+        // to keep it from moving around at all:
+        Cursor.lockState = CursorLockMode.Locked;
 
     }
 

@@ -473,6 +473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  shouldDestroyOnColission: 0
 --- !u!136 &639343052
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -812,8 +813,11 @@ GameObject:
   - component: {fileID: 1282839072}
   - component: {fileID: 1282839074}
   - component: {fileID: 1282839073}
+  - component: {fileID: 1282839075}
+  - component: {fileID: 1282839077}
+  - component: {fileID: 1282839076}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Jutsu Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -849,7 +853,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 942562058276386324, guid: 1c6db7f3fb3c5429a800d27da91a8b60, type: 3}
   shootForce: 20
   cam: {fileID: 330585546}
-  player: {fileID: 1282839071}
 --- !u!153 &1282839073
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -979,6 +982,48 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1282839075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282839070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 884626e1110d84e7faa231dd9af7360f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1282839076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282839070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e744ed5e143524c5982da3fb8579527f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 942562058276386324, guid: 1c6db7f3fb3c5429a800d27da91a8b60, type: 3}
+  shootForce: 20
+  cam: {fileID: 330585546}
+--- !u!114 &1282839077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282839070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075eab296aaed496a9b911707fd74a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSelected: 0
+  dotonShieldObject: {fileID: 993231203109758677, guid: 56e14eb41c61e4bd3a17966a63205e59, type: 3}
+  cameraTransform: {fileID: 330585546}
 --- !u!4 &1285633859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6216398183866726781, guid: 5866bdb96f38f4e1e91c360a624f31e7, type: 3}
