@@ -11,7 +11,7 @@ public class KatonBall : MonoBehaviour, IJutsu
 
     [Header("Scene References")]
     [Tooltip("Reference to the camera transform.")]
-    public Transform cam;
+    public Camera cam;
 
     public string Name => "KatonBall";
     public int JutsuId => 2;
@@ -20,22 +20,35 @@ public class KatonBall : MonoBehaviour, IJutsu
 
     public int ManaValue => manaValue;
 
+    public float maxDistance = 100f;
+
     public void CastJutsu()
     {
-        // 1. Determine spawn position (at the player’s position, or offset if desired).
-        Vector3 spawnPos = transform.position;
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Vector3 targetPoint;
 
-        // 2. Determine spawn rotation so that the projectile faces the same direction as the camera.
-        Quaternion spawnRot = Quaternion.LookRotation(cam.forward);
+        // 2. Raycast to see what we hit
+        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance))
+        {
+            targetPoint = hit.point;
+        }
+        else
+        {
+            targetPoint = ray.origin + ray.direction * maxDistance;
+        }
 
-        // 3. Instantiate the projectile at the player’s position, oriented forward from the camera.
-        GameObject newProjectile = Instantiate(projectilePrefab, spawnPos, spawnRot);
+        // 3. Get direction from spawn to target point
+        Vector3 direction = (targetPoint - transform.position).normalized;
+
+        // 4. Instantiate and shoot
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(direction));
 
         // 4. If the projectile has a Rigidbody, apply force in the camera’s forward direction.
-        Rigidbody rb = newProjectile.GetComponent<Rigidbody>();
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+
         if (rb != null)
         {
-            rb.AddForce(cam.forward * shootForce, ForceMode.Impulse);
+            rb.AddForce(direction * shootForce, ForceMode.Impulse);
         }
     }
 }

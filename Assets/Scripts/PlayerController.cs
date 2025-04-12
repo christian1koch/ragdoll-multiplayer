@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 400;
     public float jumpForce = 2000;
+
+    private readonly float jumpStaminaCost = 2;
 
     public Transform cam;
 
@@ -21,6 +24,10 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier = 2.0f;
 
     public Animator targetAnimator;
+
+    public AttributesManager playerAttributes;
+
+    public float groundCheckDistance = 2.0f;
 
     public bool isGrounded;
     void Start()
@@ -53,6 +60,7 @@ public class PlayerController : MonoBehaviour
 
     private void MoveCharacter()
     {
+        onVerticalMovementDisableStaminaRegen();
         float forwardInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -63,9 +71,10 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirHorizontal = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.right;
         hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
         float jumpInput = Input.GetAxis("Jump");
-        if (jumpInput > 0)
+        if (jumpInput > 0 && playerAttributes.stamina >= jumpStaminaCost)
         {
             hipsRigidBody.AddForce(new Vector3(0, jumpForce, 0));
+            playerAttributes.stamina -= jumpStaminaCost;
         }
         if (forwardInput == 0)
         {
@@ -88,5 +97,27 @@ public class PlayerController : MonoBehaviour
 
         rightHandRb.GetComponent<ColissionTest>().isPunching = false;
         // then set the CollissionTest from the right hand to false
+    }
+
+
+    private void onVerticalMovementDisableStaminaRegen()
+    {
+        Vector3 origin = hipsRigidBody.transform.position;
+        Vector3 direction = hipsRigidBody.transform.TransformDirection(Vector3.down);
+
+        RaycastHit hit;
+        LayerMask groundLayer = LayerMask.GetMask("noselfcolission");
+        groundLayer = ~groundLayer;
+        // Send a ray straight down
+        bool isGrounded = Physics.Raycast(origin, direction, out hit, groundCheckDistance, groundLayer);
+
+        if (!isGrounded && playerAttributes.shouldRegenStamina)
+        {
+            playerAttributes.shouldRegenStamina = false;
+        }
+        if (isGrounded && !playerAttributes.shouldRegenStamina)
+        {
+            playerAttributes.shouldRegenStamina = true;
+        }
     }
 }

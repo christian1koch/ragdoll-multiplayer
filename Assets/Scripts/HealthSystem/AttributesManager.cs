@@ -16,6 +16,7 @@ public class AttributesManager : MonoBehaviour
     public float manaRegen = 0.5f;
     public float staminaRegen = 10f;
 
+    public bool shouldRegenStamina = true;
 
     public bool shouldDestroyOnColission = false;
 
@@ -36,7 +37,7 @@ public class AttributesManager : MonoBehaviour
         {
             mana += manaRegen * Time.deltaTime;
         }
-        if (stamina < maxStamina)
+        if (stamina < maxStamina && shouldRegenStamina)
         {
             stamina += staminaRegen * Time.deltaTime;
         }
@@ -51,4 +52,6 @@ public class AttributesManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
 }
