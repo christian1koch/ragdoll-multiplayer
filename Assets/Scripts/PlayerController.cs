@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 2000;
 
     private readonly float jumpStaminaCost = 2;
+    public float punchStaminaCost = 25f;
 
     public Transform cam;
 
@@ -44,9 +45,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && !rightHandRb.GetComponent<ColissionTest>().isPunching && playerAttributes.stamina >= punchStaminaCost)
         {
             StartCoroutine(PunchCoroutine());
+            playerAttributes.stamina -= punchStaminaCost;
             float targetAngle = cam.eulerAngles.y;
             Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             rightHandRb.AddForce(punchSpeed * moveDirForward);
@@ -90,13 +92,18 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator PunchCoroutine()
     {
+
+
         // set the CollissionTest from the right hand to true
         rightHandRb.GetComponent<ColissionTest>().isPunching = true;
+        targetAnimator.SetTrigger("punchRight");
         // then wait 0.5 seconds
         yield return new WaitForSeconds(0.5f);
 
         rightHandRb.GetComponent<ColissionTest>().isPunching = false;
         // then set the CollissionTest from the right hand to false
+
+
     }
 
 

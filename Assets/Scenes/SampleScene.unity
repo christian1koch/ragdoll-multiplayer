@@ -2671,6 +2671,7 @@ GameObject:
   - component: {fileID: 5520232243305774544}
   - component: {fileID: 5520232243305774543}
   - component: {fileID: 5520232243305774545}
+  - component: {fileID: 5520232243305774546}
   m_Layer: 6
   m_Name: hand.r
   m_TagString: hand
@@ -4296,6 +4297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 200
   jumpForce: 1000
+  punchStaminaCost: 25
   cam: {fileID: 330585546}
   hips: {fileID: 1930170806198487632}
   hipJoint: {fileID: 1930170806198487634}
@@ -5035,6 +5037,21 @@ MonoBehaviour:
   mirror: 1
   shouldStartRot: 1
   localRotation: 1
+--- !u!114 &5520232243305774546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355001949455539446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa9d9300293448f6b8e94d98a40277c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  shouldDestroyOnColission: 1
+  isPunching: 0
 --- !u!4 &5550016547386782097
 Transform:
   m_ObjectHideFlags: 0
