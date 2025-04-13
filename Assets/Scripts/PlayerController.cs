@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -32,9 +33,20 @@ public class PlayerController : MonoBehaviour
     public float groundCheckDistance = 2.0f;
 
     public bool isGrounded;
+
+
+    [Header("Dash Settings")]
+    public float dashForce = 800f;
+    public float dashCooldown = 1.0f;
+
+    private float lastDashTime;
+    private bool canDash = true;
+
+    private List<Rigidbody> allRigidbodies;
     void Start()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
+        allRigidbodies = new List<Rigidbody>(GetComponentsInChildren<Rigidbody>());
         // Hide the cursor
         Cursor.visible = false;
 
@@ -52,6 +64,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(PunchCoroutine());
         }
+        HandleDashInput();
     }
     void FixedUpdate()
     {
@@ -59,6 +72,7 @@ public class PlayerController : MonoBehaviour
         onJump();
         onRun();
         MoveCharacter();
+
     }
 
     private void MoveCharacter()
@@ -129,7 +143,8 @@ public class PlayerController : MonoBehaviour
 
     private void onRun()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && playerAttributes.stamina >= 10)
+        float forwardInput = Input.GetAxis("Vertical");
+        if (Input.GetKey(KeyCode.LeftShift) && forwardInput != 0 && playerAttributes.stamina > 0)
         {
             speed = baseSpeed * 1.5f;
             playerAttributes.LockStaminaRegen("run");
@@ -143,4 +158,45 @@ public class PlayerController : MonoBehaviour
             playerAttributes.RequestStaminaRegenUnlock("run");
         }
     }
+
+    private IEnumerator Dash(Vector3 direction)
+    {
+        canDash = false;
+        lastDashTime = Time.time;
+
+        foreach (Rigidbody rb in allRigidbodies)
+        {
+            rb.AddForce(direction * dashForce, ForceMode.Impulse);
+        }
+        playerAttributes.stamina -= 25;
+
+        yield return new WaitForSeconds(0.3f); // Duration of the dash
+        canDash = true;
+    }
+
+    private void HandleDashInput()
+    {
+
+        if (!Input.GetKeyDown(KeyCode.LeftCommand))
+            return;
+        if (playerAttributes.stamina < 25)
+            return;
+        if (!canDash || Time.time - lastDashTime < dashCooldown)
+            return;
+
+        Vector3 inputDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        if (inputDir == Vector3.zero)
+            return;
+
+        float targetAngle = cam.eulerAngles.y;
+        Vector3 dashDirection = Quaternion.Euler(0f, targetAngle, 0f) * inputDir.normalized;
+
+        StartCoroutine(Dash(dashDirection));
+    }
+
+
+
+
+
+
 }
