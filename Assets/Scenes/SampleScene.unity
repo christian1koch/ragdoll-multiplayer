@@ -3268,6 +3268,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Animatable
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5866bdb96f38f4e1e91c360a624f31e7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5780776372991433904, guid: 5866bdb96f38f4e1e91c360a624f31e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 24.953512
