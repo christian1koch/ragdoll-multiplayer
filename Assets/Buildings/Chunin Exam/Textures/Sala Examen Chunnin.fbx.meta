@@ -3,7 +3,77 @@ guid: 3cdeee3a2ecd04570922dc430623badc
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (1)
+    second: {fileID: 2800000, guid: af5aa776dd0ac48278e60021590c2739, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (10)
+    second: {fileID: 2800000, guid: d1c9a99bc8252438fa989acc7994ba6e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (11)
+    second: {fileID: 2800000, guid: 2470c8c509144483dac2ceb9182ee847, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (12)
+    second: {fileID: 2800000, guid: 0da26bc0d3adf44d49a91b5d56030ba3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (13)
+    second: {fileID: 2800000, guid: 896ba02ae08ac46dba56ffe883e286b5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (15)
+    second: {fileID: 2800000, guid: bb32dbdcebeed4ae8bbbd08758017769, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (2)
+    second: {fileID: 2800000, guid: 4a7f7baf936844206bcd6730af2d596d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (3)
+    second: {fileID: 2800000, guid: 7b956a1c5b3094de58dbaec4eca4eb8f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (4)
+    second: {fileID: 2800000, guid: 6d1eb7e11c05b47bba4e7c2790ca0272, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (5)
+    second: {fileID: 2800000, guid: b060fd27a254b4c939183810e5778c26, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (6)
+    second: {fileID: 2800000, guid: ae38450e5e72c4f28904caa3f9b4337b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (7)
+    second: {fileID: 2800000, guid: 2d75077b2cb2c454e87b46180af31e99, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (8)
+    second: {fileID: 2800000, guid: 13c056d816f284947aafe334c3e940cc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Texture (9)
+    second: {fileID: 2800000, guid: ace546aecea4a4b6d83dd62af844d3b9, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

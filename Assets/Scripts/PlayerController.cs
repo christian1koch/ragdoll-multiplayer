@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public float baseSpeed = 200;
     public float speed = 200;
@@ -13,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private readonly float jumpStaminaCost = 2;
     public float punchStaminaCost = 25f;
 
-    public Transform cam;
+    public Camera cam;
 
     public GameObject hips;
 
@@ -43,7 +45,11 @@ public class PlayerController : MonoBehaviour
     private bool canDash = true;
 
     private List<Rigidbody> allRigidbodies;
-    void Start()
+
+    public CinemachineCamera aimCam;
+    public CinemachineCamera followCam;
+
+    public override void OnNetworkSpawn()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
         allRigidbodies = new List<Rigidbody>(GetComponentsInChildren<Rigidbody>());
@@ -54,10 +60,31 @@ public class PlayerController : MonoBehaviour
         // to keep it from moving around at all:
         Cursor.lockState = CursorLockMode.Locked;
 
+        if (!IsOwner)
+        {
+            cam.enabled = false;
+            cam.GetComponentInChildren<CinemachineBrain>().enabled = false;
+            cam.tag = "Untagged";
+            aimCam.enabled = false;
+            followCam.enabled = false;
+        }
+        else
+        {
+            cam.enabled = true;
+            cam.GetComponentInChildren<CinemachineBrain>().enabled = true;
+            cam.tag = "MainCamera";
+            aimCam.enabled = true;
+            followCam.enabled = true;
+        }
+
     }
 
     void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
         bool isPunching = rightHandRb.GetComponent<ColissionTest>().isPunching;
         bool enoughStaminaToPunch = playerAttributes.stamina >= punchStaminaCost;
         if (Input.GetKeyDown(KeyCode.F) && !isPunching && enoughStaminaToPunch)
@@ -68,6 +95,10 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
         onVerticalMovementDisableStaminaRegen();
         onJump();
         onRun();
@@ -80,7 +111,7 @@ public class PlayerController : MonoBehaviour
         float forwardInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        float targetAngle = cam.eulerAngles.y;
+        float targetAngle = cam.transform.eulerAngles.y;
 
         Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         Vector3 moveDirHorizontal = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.right;
@@ -102,7 +133,7 @@ public class PlayerController : MonoBehaviour
         rightHandRb.GetComponent<ColissionTest>().isPunching = true;
         targetAnimator.SetTrigger("punchRight");
         playerAttributes.stamina -= punchStaminaCost;
-        float targetAngle = cam.eulerAngles.y;
+        float targetAngle = cam.transform.eulerAngles.y;
         Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         rightHandRb.AddForce(punchSpeed * moveDirForward);
         yield return new WaitForSeconds(0.5f);
@@ -188,7 +219,7 @@ public class PlayerController : MonoBehaviour
         if (inputDir == Vector3.zero)
             return;
 
-        float targetAngle = cam.eulerAngles.y;
+        float targetAngle = cam.transform.eulerAngles.y;
         Vector3 dashDirection = Quaternion.Euler(0f, targetAngle, 0f) * inputDir.normalized;
 
         StartCoroutine(Dash(dashDirection));

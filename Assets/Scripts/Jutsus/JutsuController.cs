@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class JutsuController : MonoBehaviour
+public class JutsuController : NetworkBehaviour
 {
     // list of all scripts inside this game object that extend the IJutsu interface
     private IJutsu[] jutsus;
@@ -16,6 +17,10 @@ public class JutsuController : MonoBehaviour
 
     private void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
         // on press click cast the jutsu
         if (Input.GetMouseButtonDown(0))
         {
@@ -34,6 +39,7 @@ public class JutsuController : MonoBehaviour
             SelectJutsu(1);
         }
     }
+
 
     private void CastJutsu()
     {
