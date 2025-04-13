@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884626e1110d84e7faa231dd9af7360f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAttributes: {fileID: 1416040231721970482}
+  playerAttributes: {fileID: 5834375059708171519}
 --- !u!114 &7733074084002584214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,8 +506,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 674144703177410114}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07221117, y: 0.000000043597282, z: -0.000000003156451, w: 0.9973894}
-  m_LocalPosition: {x: 3.0699997, y: 7.049999, z: -10.229996}
+  m_LocalRotation: {x: -0.0034906585, y: 0.000000019917174, z: 6.952448e-11, w: 0.9999939}
+  m_LocalPosition: {x: 3.0699997, y: 5.560052, z: -4.4898987}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1423,9 +1423,10 @@ GameObject:
   - component: {fileID: 4298509488685332516}
   - component: {fileID: 1239529343050586201}
   - component: {fileID: 1712536205973287412}
+  - component: {fileID: 5834375059708171519}
   m_Layer: 6
   m_Name: player hips
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1701,17 +1702,39 @@ MonoBehaviour:
   hips: {fileID: 1760896812568452767}
   hipJoint: {fileID: 7894169219418507957}
   hipsRigidBody: {fileID: 6866077518545158484}
-  rightHandRb: {fileID: 0}
+  rightHandRb: {fileID: 4366955537033786088}
   punchSpeed: 2000
   fallMultiplier: 20
   targetAnimator: {fileID: 3848932104492449987}
-  playerAttributes: {fileID: 4231779310844839045}
   groundCheckDistance: 2
   isGrounded: 0
   dashForce: 20
   dashCooldown: 1
   aimCam: {fileID: 2593075379036088262}
   followCam: {fileID: 4687637592966369742}
+--- !u!114 &5834375059708171519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760896812568452767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cdf400450b4488c90462cddb8bfebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  maxMana: 100
+  maxStamina: 100
+  health:
+    m_InternalValue: 0
+  mana: 100
+  stamina: 100
+  healthRegen: 0.1
+  manaRegen: 0.5
+  staminaRegen: 10
+  shouldDestroyOnColission: 0
 --- !u!1 &2220892722970850712
 GameObject:
   m_ObjectHideFlags: 0
@@ -3829,7 +3852,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 488145099924821967}
-  - component: {fileID: 4231779310844839045}
   m_Layer: 0
   m_Name: Controlled Model
   m_TagString: Untagged
@@ -3858,28 +3880,6 @@ Transform:
   - {fileID: 7754388699945592472}
   m_Father: {fileID: 2974449378448932434}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4231779310844839045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6563381796992073918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20cdf400450b4488c90462cddb8bfebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  maxMana: 100
-  maxStamina: 100
-  health: 100
-  mana: 100
-  stamina: 100
-  healthRegen: 0.1
-  manaRegen: 0.5
-  staminaRegen: 10
-  shouldDestroyOnColission: 0
 --- !u!1 &6572687339280250717
 GameObject:
   m_ObjectHideFlags: 0
@@ -4876,7 +4876,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6906773521091648745}
-  - component: {fileID: 1416040231721970482}
   m_Layer: 6
   m_Name: Armature
   m_TagString: Untagged
@@ -4900,28 +4899,6 @@ Transform:
   - {fileID: 3600431992515320421}
   m_Father: {fileID: 488145099924821967}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &1416040231721970482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7566292044605991281}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20cdf400450b4488c90462cddb8bfebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  maxMana: 100
-  maxStamina: 100
-  health: 100
-  mana: 100
-  stamina: 100
-  healthRegen: 0.1
-  manaRegen: 0.5
-  staminaRegen: 10
-  shouldDestroyOnColission: 0
 --- !u!1 &7945022880261503759
 GameObject:
   m_ObjectHideFlags: 0

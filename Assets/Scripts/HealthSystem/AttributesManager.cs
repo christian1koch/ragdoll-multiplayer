@@ -1,13 +1,14 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class AttributesManager : MonoBehaviour
+public class AttributesManager : NetworkBehaviour
 {
 
     public float maxHealth = 100;
     public float maxMana = 100;
     public float maxStamina = 100;
-    public float health;
+    public NetworkVariable<float> health = new NetworkVariable<float>();
 
     public float mana;
 
@@ -33,34 +34,41 @@ public class AttributesManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        health = maxHealth;
-        mana = maxMana;
-        stamina = maxStamina;
-    }
-
     void Update()
     {
-        if (health < maxHealth)
+        if (IsOwner) // Only the owner can interact with their local UI
         {
-            health += healthRegen * Time.deltaTime;
-        }
-        if (mana < maxMana)
-        {
-            mana += manaRegen * Time.deltaTime;
-        }
-        if (stamina < maxStamina && shouldRegenStamina)
-        {
-            stamina += staminaRegen * Time.deltaTime;
+            // Log values locally, but do not modify network variables here
+            Debug.Log("Mana: " + mana);
+            Debug.Log("HEALTH: " + health.Value);  // Use .Value for reading the networked value
+            Debug.Log("Stamina: " + stamina);
+
+            // The server should handle regeneration, not the client
+            if (IsServer) // Make sure only the server performs these updates
+            {
+                if (health.Value < maxHealth)
+                {
+                    health.Value += healthRegen * Time.deltaTime;
+                }
+                if (mana < maxMana)
+                {
+                    mana += manaRegen * Time.deltaTime;
+                }
+                if (stamina < maxStamina && shouldRegenStamina)
+                {
+                    stamina += staminaRegen * Time.deltaTime;
+                }
+            }
         }
     }
 
 
-    public void TakeDamage(int amount)
+    [ServerRpc(RequireOwnership = false)]
+    public void ApplyDamageServerRpc(int amount)
     {
-        health -= amount;
-        if (health < 0 && shouldDestroyOnColission)
+        health.Value -= amount;
+        Debug.Log("taking damage in take damage " + amount);
+        if (health.Value < 0 && shouldDestroyOnColission)
         {
             Destroy(gameObject);
         }
@@ -74,6 +82,28 @@ public class AttributesManager : MonoBehaviour
     public void RequestStaminaRegenUnlock(string lockIdentifier)
     {
         staminaRegenLocks.Remove(lockIdentifier);
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        // Only do this on the server
+        if (IsServer)
+        {
+            health.Value = maxHealth;
+            mana = maxMana;
+            stamina = maxStamina;
+        }
+
+        // if is owner and tag is player
+        if (IsOwner && gameObject.CompareTag("Player"))
+        {
+            // Tell the HUD this is the local player
+            HUD hud = FindFirstObjectByType<HUD>();
+            if (hud != null)
+            {
+                hud.playerAttributes = this;
+            }
+        }
     }
 
 

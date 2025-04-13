@@ -1,7 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-// TODO: Change name to correct name
-public class ColissionTest : MonoBehaviour
+public class ColissionTest : NetworkBehaviour
 {
     public int damage = 10;
     public bool shouldDestroyOnColission = true;
@@ -10,16 +10,25 @@ public class ColissionTest : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!IsOwner) return; // Only trigger collision logic for the owner of the punch object
 
-
-        AttributesManager targetHealth = collision.gameObject.GetComponent<AttributesManager>();
-        if (targetHealth != null && isPunching)
+        AttributesManager target = collision.gameObject.GetComponentInParent<AttributesManager>();
+        if (target != null && isPunching)
         {
-            targetHealth.TakeDamage(damage);
+            ulong targetId = target.NetworkObject.NetworkObjectId;
+            ApplyDamageServerRpc(targetId, damage);
         }
-        else
+    }
+    [ServerRpc]
+    private void ApplyDamageServerRpc(ulong networkObjectId, int damageAmount)
+    {
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
-            Debug.Log("No AttributesManager found on the collided object.");
+            AttributesManager target = netObj.GetComponentInParent<AttributesManager>();
+            if (target != null)
+            {
+                target.ApplyDamageServerRpc(damageAmount);
+            }
         }
     }
 }

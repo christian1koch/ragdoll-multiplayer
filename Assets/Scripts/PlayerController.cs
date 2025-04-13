@@ -30,7 +30,7 @@ public class PlayerController : NetworkBehaviour
 
     public Animator targetAnimator;
 
-    public AttributesManager playerAttributes;
+    private AttributesManager playerAttributes;
 
     public float groundCheckDistance = 2.0f;
 
@@ -75,6 +75,8 @@ public class PlayerController : NetworkBehaviour
             cam.tag = "MainCamera";
             aimCam.enabled = true;
             followCam.enabled = true;
+            IgnoreOwnCollision();
+            playerAttributes = gameObject.GetComponent<AttributesManager>();
         }
 
     }
@@ -223,6 +225,19 @@ public class PlayerController : NetworkBehaviour
         Vector3 dashDirection = Quaternion.Euler(0f, targetAngle, 0f) * inputDir.normalized;
 
         StartCoroutine(Dash(dashDirection));
+    }
+
+    void IgnoreOwnCollision()
+    {
+        Collider[] allColliders = GetComponentsInChildren<Collider>();
+
+        for (int i = 0; i < allColliders.Length; i++)
+        {
+            for (int j = i + 1; j < allColliders.Length; j++)
+            {
+                Physics.IgnoreCollision(allColliders[i], allColliders[j]);
+            }
+        }
     }
 
 

@@ -1,22 +1,33 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class CollisionDamager : MonoBehaviour
+public class CollisionDamager : NetworkBehaviour
 {
-
     public int damage = 10;
     public bool shouldDestroyOnColission = true;
 
     private void OnCollisionEnter(Collision collision)
     {
-        AttributesManager targetHealth = collision.gameObject.GetComponent<AttributesManager>();
+        // Look in parents too
+        AttributesManager targetHealth = collision.gameObject.GetComponentInParent<AttributesManager>();
+
         if (targetHealth != null)
         {
-            targetHealth.TakeDamage(damage);
+            // Apply damage on the server side
+            if (IsServer) // Ensures this runs only on the server
+            {
+                Debug.Log("taking damage " + damage);
+                targetHealth.ApplyDamageServerRpc(damage);
+            }
+
             if (shouldDestroyOnColission)
             {
-                Destroy(gameObject);
+                // Only destroy on the server (using NetworkObject.Destroy for sync)
+                if (IsServer)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }
-
 }

@@ -1045,30 +1045,6 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1431055753
       objectReference: {fileID: 0}
-    - target: {fileID: 4624549417402131101, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.560052
-      objectReference: {fileID: 0}
-    - target: {fileID: 4624549417402131101, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.4898987
-      objectReference: {fileID: 0}
-    - target: {fileID: 4624549417402131101, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9999939
-      objectReference: {fileID: 0}
-    - target: {fileID: 4624549417402131101, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.0034906585
-      objectReference: {fileID: 0}
-    - target: {fileID: 4624549417402131101, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.000000019917174
-      objectReference: {fileID: 0}
-    - target: {fileID: 4624549417402131101, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 6.952448e-11
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1113,6 +1089,7 @@ GameObject:
   - component: {fileID: 639343054}
   - component: {fileID: 639343053}
   - component: {fileID: 639343052}
+  - component: {fileID: 639343056}
   - component: {fileID: 639343051}
   m_Layer: 0
   m_Name: Damage Dummy
@@ -1136,7 +1113,8 @@ MonoBehaviour:
   maxHealth: 100
   maxMana: 100
   maxStamina: 100
-  health: 100
+  health:
+    m_InternalValue: 0
   mana: 0
   stamina: 0
   healthRegen: 0.1
@@ -1235,6 +1213,27 @@ Transform:
   - {fileID: 1895024019}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &639343056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639343050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2473722113
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &724154543 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8020399278289508229, guid: 3cdeee3a2ecd04570922dc430623badc, type: 3}
