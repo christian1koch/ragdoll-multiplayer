@@ -133,12 +133,13 @@ public class PlayerController : MonoBehaviour
         {
             speed = baseSpeed * 1.5f;
             playerAttributes.LockStaminaRegen("run");
-            // TODO: Change this to stamina per second
+            targetAnimator.SetBool("isRunning", true);
             playerAttributes.stamina -= 10 * Time.deltaTime;
         }
         else
         {
             speed = baseSpeed;
+            targetAnimator.SetBool("isRunning", false);
             playerAttributes.RequestStaminaRegenUnlock("run");
         }
     }
