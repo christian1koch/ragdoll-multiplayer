@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AttributesManager : MonoBehaviour
@@ -16,9 +17,21 @@ public class AttributesManager : MonoBehaviour
     public float manaRegen = 0.5f;
     public float staminaRegen = 10f;
 
-    public bool shouldRegenStamina = true;
-
     public bool shouldDestroyOnColission = false;
+
+    private HashSet<string> staminaRegenLocks = new HashSet<string>();
+
+    public bool shouldRegenStamina
+    {
+        get
+        {
+            if (staminaRegenLocks.Count == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
 
     void Start()
     {
@@ -51,6 +64,16 @@ public class AttributesManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void LockStaminaRegen(string lockIdentifier)
+    {
+        staminaRegenLocks.Add(lockIdentifier);
+    }
+
+    public void RequestStaminaRegenUnlock(string lockIdentifier)
+    {
+        staminaRegenLocks.Remove(lockIdentifier);
     }
 
 

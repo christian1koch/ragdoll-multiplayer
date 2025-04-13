@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 400;
+    public float baseSpeed = 200;
+    public float speed = 200;
     public float jumpForce = 2000;
 
     private readonly float jumpStaminaCost = 2;
@@ -45,39 +46,31 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && !rightHandRb.GetComponent<ColissionTest>().isPunching && playerAttributes.stamina >= punchStaminaCost)
+        bool isPunching = rightHandRb.GetComponent<ColissionTest>().isPunching;
+        bool enoughStaminaToPunch = playerAttributes.stamina >= punchStaminaCost;
+        if (Input.GetKeyDown(KeyCode.F) && !isPunching && enoughStaminaToPunch)
         {
             StartCoroutine(PunchCoroutine());
-            playerAttributes.stamina -= punchStaminaCost;
-            float targetAngle = cam.eulerAngles.y;
-            Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            rightHandRb.AddForce(punchSpeed * moveDirForward);
         }
     }
     void FixedUpdate()
     {
-
+        onVerticalMovementDisableStaminaRegen();
+        onJump();
+        onRun();
         MoveCharacter();
     }
 
     private void MoveCharacter()
     {
-        onVerticalMovementDisableStaminaRegen();
         float forwardInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        Vector3 direction = new Vector3(0f, 0f, forwardInput).normalized;
         float targetAngle = cam.eulerAngles.y;
 
         Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         Vector3 moveDirHorizontal = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.right;
         hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
-        float jumpInput = Input.GetAxis("Jump");
-        if (jumpInput > 0 && playerAttributes.stamina >= jumpStaminaCost)
-        {
-            hipsRigidBody.AddForce(new Vector3(0, jumpForce, 0));
-            playerAttributes.stamina -= jumpStaminaCost;
-        }
         if (forwardInput == 0)
         {
             targetAnimator.SetBool("isWalking", false);
@@ -92,18 +85,14 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator PunchCoroutine()
     {
-
-
-        // set the CollissionTest from the right hand to true
         rightHandRb.GetComponent<ColissionTest>().isPunching = true;
         targetAnimator.SetTrigger("punchRight");
-        // then wait 0.5 seconds
+        playerAttributes.stamina -= punchStaminaCost;
+        float targetAngle = cam.eulerAngles.y;
+        Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        rightHandRb.AddForce(punchSpeed * moveDirForward);
         yield return new WaitForSeconds(0.5f);
-
         rightHandRb.GetComponent<ColissionTest>().isPunching = false;
-        // then set the CollissionTest from the right hand to false
-
-
     }
 
 
@@ -118,13 +107,39 @@ public class PlayerController : MonoBehaviour
         // Send a ray straight down
         bool isGrounded = Physics.Raycast(origin, direction, out hit, groundCheckDistance, groundLayer);
 
-        if (!isGrounded && playerAttributes.shouldRegenStamina)
+        if (!isGrounded)
         {
-            playerAttributes.shouldRegenStamina = false;
+            playerAttributes.LockStaminaRegen("jump");
         }
         if (isGrounded && !playerAttributes.shouldRegenStamina)
         {
-            playerAttributes.shouldRegenStamina = true;
+            playerAttributes.RequestStaminaRegenUnlock("jump");
+        }
+    }
+
+    private void onJump()
+    {
+        float jumpInput = Input.GetAxis("Jump");
+        if (jumpInput > 0 && playerAttributes.stamina >= jumpStaminaCost)
+        {
+            hipsRigidBody.AddForce(new Vector3(0, jumpForce, 0));
+            playerAttributes.stamina -= jumpStaminaCost;
+        }
+    }
+
+    private void onRun()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && playerAttributes.stamina >= 10)
+        {
+            speed = baseSpeed * 1.5f;
+            playerAttributes.LockStaminaRegen("run");
+            // TODO: Change this to stamina per second
+            playerAttributes.stamina -= 10 * Time.deltaTime;
+        }
+        else
+        {
+            speed = baseSpeed;
+            playerAttributes.RequestStaminaRegenUnlock("run");
         }
     }
 }
