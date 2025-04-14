@@ -48,7 +48,7 @@ public class RelayConnectionUI : MonoBehaviour
 
         try
         {
-            var allocation = await RelayService.Instance.CreateAllocationAsync(2);
+            var allocation = await RelayService.Instance.CreateAllocationAsync(4);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
             var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
