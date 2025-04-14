@@ -49,6 +49,8 @@ public class PlayerController : NetworkBehaviour
     public CinemachineCamera aimCam;
     public CinemachineCamera followCam;
 
+    public Renderer ragdollRenderer;
+
     public override void OnNetworkSpawn()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
@@ -59,6 +61,7 @@ public class PlayerController : NetworkBehaviour
         // Optionally lock the cursor to the center of the screen
         // to keep it from moving around at all:
         Cursor.lockState = CursorLockMode.Locked;
+        ragdollRenderer.material.color = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
 
         if (!IsOwner)
         {
@@ -67,6 +70,7 @@ public class PlayerController : NetworkBehaviour
             cam.tag = "Untagged";
             aimCam.enabled = false;
             followCam.enabled = false;
+
         }
         else
         {

@@ -506,8 +506,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 674144703177410114}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0034906585, y: 0.000000019917174, z: 6.952448e-11, w: 0.9999939}
-  m_LocalPosition: {x: 3.0699997, y: 5.560052, z: -4.4898987}
+  m_LocalRotation: {x: 0.07221117, y: 0.000000043597282, z: -0.000000003156451, w: 0.9973894}
+  m_LocalPosition: {x: 3.0699997, y: 7.049999, z: -10.229996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1712,6 +1712,7 @@ MonoBehaviour:
   dashCooldown: 1
   aimCam: {fileID: 2593075379036088262}
   followCam: {fileID: 4687637592966369742}
+  ragdollRenderer: {fileID: 4986960928970292000}
 --- !u!114 &5834375059708171519
 MonoBehaviour:
   m_ObjectHideFlags: 0
