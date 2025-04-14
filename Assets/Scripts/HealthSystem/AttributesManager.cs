@@ -36,28 +36,23 @@ public class AttributesManager : NetworkBehaviour
 
     void Update()
     {
+        if (IsServer) // Make sure only the server performs these updates
+        {
+            if (health.Value < maxHealth)
+            {
+                health.Value += healthRegen * Time.deltaTime;
+            }
+        }
         if (IsOwner) // Only the owner can interact with their local UI
         {
-            // Log values locally, but do not modify network variables here
-            Debug.Log("Mana: " + mana);
-            Debug.Log("HEALTH: " + health.Value);  // Use .Value for reading the networked value
-            Debug.Log("Stamina: " + stamina);
-
             // The server should handle regeneration, not the client
-            if (IsServer) // Make sure only the server performs these updates
+            if (mana < maxMana)
             {
-                if (health.Value < maxHealth)
-                {
-                    health.Value += healthRegen * Time.deltaTime;
-                }
-                if (mana < maxMana)
-                {
-                    mana += manaRegen * Time.deltaTime;
-                }
-                if (stamina < maxStamina && shouldRegenStamina)
-                {
-                    stamina += staminaRegen * Time.deltaTime;
-                }
+                mana += manaRegen * Time.deltaTime;
+            }
+            if (stamina < maxStamina && shouldRegenStamina)
+            {
+                stamina += staminaRegen * Time.deltaTime;
             }
         }
     }
@@ -90,6 +85,9 @@ public class AttributesManager : NetworkBehaviour
         if (IsServer)
         {
             health.Value = maxHealth;
+        }
+        if (IsOwner)
+        {
             mana = maxMana;
             stamina = maxStamina;
         }
