@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class ColissionTest : NetworkBehaviour
     public bool shouldDestroyOnColission = true;
 
     public bool isPunching = false;
+
+    private HashSet<AttributesManager> alreadyDamagedTargets = new HashSet<AttributesManager>();
 
     private void OnCollisionEnter(Collision collision)
     {

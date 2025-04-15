@@ -24,7 +24,7 @@ public class PlayerController : NetworkBehaviour
 
     public Rigidbody rightHandRb;
 
-    public float punchSpeed = 20.0f;
+    public float punchTorqueForce = 100f;
 
     public float fallMultiplier = 2.0f;
 
@@ -148,10 +148,12 @@ public class PlayerController : NetworkBehaviour
         playerAttributes.stamina -= punchStaminaCost;
         float targetAngle = cam.transform.eulerAngles.y;
         Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-        rightHandRb.AddForce(punchSpeed * moveDirForward);
+        Vector3 torqueDir = Vector3.Cross(rightHandRb.transform.up, moveDirForward).normalized;
+        rightHandRb.AddTorque(torqueDir * punchTorqueForce, ForceMode.Impulse);
         yield return new WaitForSeconds(0.5f);
         rightHandRb.GetComponent<ColissionTest>().isPunching = false;
     }
+
 
 
     private void onVerticalMovementDisableStaminaRegen()
