@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -6,27 +7,25 @@ public class CollisionDamager : NetworkBehaviour
     public int damage = 10;
     public bool shouldDestroyOnColission = true;
 
+    private HashSet<AttributesManager> alreadyDamagedTargets = new HashSet<AttributesManager>();
+
     private void OnCollisionEnter(Collision collision)
     {
-        // Look in parents too
         AttributesManager targetHealth = collision.gameObject.GetComponentInParent<AttributesManager>();
 
-        if (targetHealth != null)
+        if (targetHealth != null && !alreadyDamagedTargets.Contains(targetHealth))
         {
-            // Apply damage on the server side
-            if (IsServer) // Ensures this runs only on the server
+            alreadyDamagedTargets.Add(targetHealth);
+
+            if (IsServer)
             {
-                Debug.Log("taking damage " + damage);
+                Debug.Log("Dealing damage: " + damage);
                 targetHealth.ApplyDamageServerRpc(damage);
             }
 
-            if (shouldDestroyOnColission)
+            if (shouldDestroyOnColission && IsServer)
             {
-                // Only destroy on the server (using NetworkObject.Destroy for sync)
-                if (IsServer)
-                {
-                    Destroy(gameObject);
-                }
+                Destroy(gameObject);
             }
         }
     }
