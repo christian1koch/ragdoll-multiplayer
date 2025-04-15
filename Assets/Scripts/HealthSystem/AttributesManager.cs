@@ -8,6 +8,8 @@ public class AttributesManager : NetworkBehaviour
     public float maxHealth = 100;
     public float maxMana = 100;
     public float maxStamina = 100;
+
+    public float initialManaRegen = 0.5f;
     public NetworkVariable<float> health = new NetworkVariable<float>();
 
     public float mana;
@@ -102,7 +104,19 @@ public class AttributesManager : NetworkBehaviour
                 hud.playerAttributes = this;
             }
         }
+        if (!IsOwner)
+        {
+            // Connect health bar to this attributes manager
+            HealthbarUI ui = GetComponentInChildren<HealthbarUI>();
+            if (ui != null)
+            {
+                ui.SetAttributes(this);
+            }
+
+        }
     }
+
+
 
 
 }

@@ -51,6 +51,8 @@ public class PlayerController : NetworkBehaviour
 
     public Renderer ragdollRenderer;
 
+    private bool isChargingChakra = false;
+
     public override void OnNetworkSpawn()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
@@ -105,10 +107,15 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
+        OnCameraAimChange();
+        OnManaRecharge();
         onVerticalMovementDisableStaminaRegen();
-        onJump();
-        onRun();
-        MoveCharacter();
+        if (!isChargingChakra)
+        {
+            onJump();
+            onRun();
+            MoveCharacter();
+        }
 
     }
 
@@ -118,10 +125,10 @@ public class PlayerController : NetworkBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
 
         float targetAngle = cam.transform.eulerAngles.y;
+        hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
 
         Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         Vector3 moveDirHorizontal = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.right;
-        hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
         if (forwardInput == 0)
         {
             targetAnimator.SetBool("isWalking", false);
@@ -214,7 +221,7 @@ public class PlayerController : NetworkBehaviour
     private void HandleDashInput()
     {
 
-        if (!Input.GetKeyDown(KeyCode.LeftCommand))
+        if (!Input.GetKeyDown(KeyCode.LeftCommand) && !Input.GetKeyDown(KeyCode.LeftControl))
             return;
         if (playerAttributes.stamina < 25)
             return;
@@ -244,7 +251,29 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    void OnManaRecharge()
+    {
+        if (Input.GetKey(KeyCode.X))
+        {
+            Debug.Log("pressing X");
+            playerAttributes.manaRegen = playerAttributes.initialManaRegen * 10;
+            isChargingChakra = true;
+            targetAnimator.SetBool("isCharging", true);
+            targetAnimator.SetBool("isRunning", false);
+            targetAnimator.SetBool("isWalking", false);
+            return;
+        }
+        isChargingChakra = false;
+        targetAnimator.SetBool("isCharging", false);
 
+        playerAttributes.manaRegen = playerAttributes.initialManaRegen;
+    }
+
+    void OnCameraAimChange()
+    {
+        float targetAngle = cam.transform.eulerAngles.y;
+        hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
+    }
 
 
 
