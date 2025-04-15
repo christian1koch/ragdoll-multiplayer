@@ -53,6 +53,8 @@ public class PlayerController : NetworkBehaviour
 
     private bool isChargingChakra = false;
 
+    public Punch punchController;
+
     public override void OnNetworkSpawn()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
@@ -93,11 +95,9 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-        bool isPunching = rightHandRb.GetComponent<ColissionTest>().isPunching;
-        bool enoughStaminaToPunch = playerAttributes.stamina >= punchStaminaCost;
-        if (Input.GetKeyDown(KeyCode.F) && !isPunching && enoughStaminaToPunch)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            StartCoroutine(PunchCoroutine());
+            punchController.TryPunch();
         }
         HandleDashInput();
     }
@@ -140,18 +140,6 @@ public class PlayerController : NetworkBehaviour
         hipsRigidBody.AddForce(forwardInput * speed * moveDirForward);
         hipsRigidBody.AddForce(horizontalInput * speed * moveDirHorizontal);
 
-    }
-    private IEnumerator PunchCoroutine()
-    {
-        rightHandRb.GetComponent<ColissionTest>().isPunching = true;
-        targetAnimator.SetTrigger("punchRight");
-        playerAttributes.stamina -= punchStaminaCost;
-        float targetAngle = cam.transform.eulerAngles.y;
-        Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-        Vector3 torqueDir = Vector3.Cross(rightHandRb.transform.up, moveDirForward).normalized;
-        rightHandRb.AddTorque(torqueDir * punchTorqueForce, ForceMode.Impulse);
-        yield return new WaitForSeconds(0.5f);
-        rightHandRb.GetComponent<ColissionTest>().isPunching = false;
     }
 
 

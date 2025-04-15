@@ -1478,12 +1478,20 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 1431055753
       objectReference: {fileID: 0}
+    - target: {fileID: 3280521255269922007, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5789111702053065418, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5789111702053065418, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945022880261503759, guid: 5fe1d13b1eccf4c67b085d8fb6cc8e14, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

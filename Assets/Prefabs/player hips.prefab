@@ -1574,6 +1574,7 @@ GameObject:
   - component: {fileID: 1239529343050586201}
   - component: {fileID: 1712536205973287412}
   - component: {fileID: 5834375059708171519}
+  - component: {fileID: 8508712706045114539}
   m_Layer: 6
   m_Name: player hips
   m_TagString: Player
@@ -1854,7 +1855,7 @@ MonoBehaviour:
   hipJoint: {fileID: 7894169219418507957}
   hipsRigidBody: {fileID: 6866077518545158484}
   rightHandRb: {fileID: 4366955537033786088}
-  punchSpeed: 2000
+  punchTorqueForce: 100
   fallMultiplier: 20
   targetAnimator: {fileID: 3848932104492449987}
   groundCheckDistance: 2
@@ -1864,6 +1865,7 @@ MonoBehaviour:
   aimCam: {fileID: 2593075379036088262}
   followCam: {fileID: 4687637592966369742}
   ragdollRenderer: {fileID: 4986960928970292000}
+  punchController: {fileID: 8508712706045114539}
 --- !u!114 &5834375059708171519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1888,6 +1890,26 @@ MonoBehaviour:
   manaRegen: 0.5
   staminaRegen: 10
   shouldDestroyOnColission: 0
+--- !u!114 &8508712706045114539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760896812568452767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63be92929caa74464b3b16c5cffbecbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightHandRb: {fileID: 4366955537033786088}
+  animator: {fileID: 3848932104492449987}
+  attributes: {fileID: 5834375059708171519}
+  cam: {fileID: 2858708346161186169}
+  punchTorqueForce: 100
+  punchStaminaCost: 20
+  punchCooldown: 0.5
+  punchCollision: {fileID: 5566582544201859699}
 --- !u!1 &1887104020194043395
 GameObject:
   m_ObjectHideFlags: 0
@@ -3356,8 +3378,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  shouldDestroyOnColission: 1
-  isPunching: 0
 --- !u!1 &3560737822990949394
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,26 +2,39 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ColissionTest : NetworkBehaviour
+public class PunchColissionManager : NetworkBehaviour
 {
     public int damage = 10;
-    public bool shouldDestroyOnColission = true;
-
-    public bool isPunching = false;
-
     private HashSet<AttributesManager> alreadyDamagedTargets = new HashSet<AttributesManager>();
+    private bool canDamage = false;
+
+    public void EnableDamage()
+    {
+        canDamage = true;
+        alreadyDamagedTargets.Clear();
+    }
+
+    public void DisableDamage()
+    {
+        canDamage = false;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!IsOwner) return; // Only trigger collision logic for the owner of the punch object
+        if (!IsOwner) return;
+
+        if (!canDamage) return;
 
         AttributesManager target = collision.gameObject.GetComponentInParent<AttributesManager>();
-        if (target != null && isPunching)
+
+        if (target != null)
         {
             ulong targetId = target.NetworkObject.NetworkObjectId;
+            alreadyDamagedTargets.Add(target);
             ApplyDamageServerRpc(targetId, damage);
         }
     }
+
     [ServerRpc]
     private void ApplyDamageServerRpc(ulong networkObjectId, int damageAmount)
     {
