@@ -55,6 +55,8 @@ public class PlayerController : NetworkBehaviour
 
     public Punch punchController;
 
+    public WallWalker wallWalker;
+
     public override void OnNetworkSpawn()
     {
         hipsRigidBody = hips.GetComponent<Rigidbody>();
@@ -124,12 +126,35 @@ public class PlayerController : NetworkBehaviour
         float forwardInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        float targetAngle = cam.transform.eulerAngles.y;
-        hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
+        if (!wallWalker.isWallWalking)
+        {
+            // ============ NORMAL GROUND MOVEMENT ============
+            float targetAngle = cam.transform.eulerAngles.y;
+            hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
 
-        Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-        Vector3 moveDirHorizontal = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.right;
-        if (forwardInput == 0)
+            Vector3 moveDirForward = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            Vector3 moveDirRight = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.right;
+
+            hipsRigidBody.AddForce(forwardInput * speed * moveDirForward);
+            hipsRigidBody.AddForce(horizontalInput * speed * moveDirRight);
+        }
+        else
+        {
+            // ============ WALL WALKING MOVEMENT ============
+            Vector3 inputDir = (cam.transform.forward * forwardInput + cam.transform.right * horizontalInput).normalized;
+            Vector3 moveDirection = Vector3.ProjectOnPlane(inputDir, wallWalker.GravityUp).normalized;
+
+            if (inputDir.sqrMagnitude > 0.1f)
+            {
+                // Face move direction
+                hipJoint.targetRotation = Quaternion.LookRotation(moveDirection, wallWalker.GravityUp);
+            }
+
+            hipsRigidBody.AddForce(moveDirection * speed);
+        }
+
+        // Animation stays the same
+        if (forwardInput == 0 && horizontalInput == 0)
         {
             targetAnimator.SetBool("isWalking", false);
         }
@@ -137,9 +162,6 @@ public class PlayerController : NetworkBehaviour
         {
             targetAnimator.SetBool("isWalking", true);
         }
-        hipsRigidBody.AddForce(forwardInput * speed * moveDirForward);
-        hipsRigidBody.AddForce(horizontalInput * speed * moveDirHorizontal);
-
     }
 
 
@@ -170,10 +192,11 @@ public class PlayerController : NetworkBehaviour
         float jumpInput = Input.GetAxis("Jump");
         if (jumpInput > 0 && playerAttributes.stamina >= jumpStaminaCost)
         {
-            hipsRigidBody.AddForce(new Vector3(0, jumpForce, 0));
+            hipsRigidBody.AddForce(wallWalker.GravityUp * jumpForce);
             playerAttributes.stamina -= jumpStaminaCost;
         }
     }
+
 
     private void onRun()
     {
@@ -259,10 +282,13 @@ public class PlayerController : NetworkBehaviour
         playerAttributes.manaRegen = playerAttributes.initialManaRegen;
     }
 
-    void OnCameraAimChange()
+    private void OnCameraAimChange()
     {
         float targetAngle = cam.transform.eulerAngles.y;
-        hipJoint.targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
+
+        Vector3 forwardProjected = Quaternion.LookRotation(Vector3.ProjectOnPlane(cam.transform.forward, wallWalker.GravityUp), wallWalker.GravityUp) * Vector3.forward;
+
+        hipJoint.targetRotation = Quaternion.LookRotation(forwardProjected, wallWalker.GravityUp);
     }
 
 

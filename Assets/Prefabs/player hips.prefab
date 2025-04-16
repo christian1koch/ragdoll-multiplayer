@@ -1575,6 +1575,7 @@ GameObject:
   - component: {fileID: 1712536205973287412}
   - component: {fileID: 5834375059708171519}
   - component: {fileID: 8508712706045114539}
+  - component: {fileID: 8563928277168876565}
   m_Layer: 6
   m_Name: player hips
   m_TagString: Player
@@ -1866,6 +1867,7 @@ MonoBehaviour:
   followCam: {fileID: 4687637592966369742}
   ragdollRenderer: {fileID: 4986960928970292000}
   punchController: {fileID: 8508712706045114539}
+  wallWalker: {fileID: 8563928277168876565}
 --- !u!114 &5834375059708171519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1910,6 +1912,27 @@ MonoBehaviour:
   punchStaminaCost: 20
   punchCooldown: 0.5
   punchCollision: {fileID: 5566582544201859699}
+--- !u!114 &8563928277168876565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760896812568452767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4634be24ecad4385a1eda5f063bdeee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravityStrength: 9.81
+  wallCheckDistance: 1.5
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 55
+  rb: {fileID: 6866077518545158484}
+  attributes: {fileID: 5834375059708171519}
+  isWallWalking: 0
+  allRigidbodies: []
 --- !u!1 &1887104020194043395
 GameObject:
   m_ObjectHideFlags: 0
@@ -4193,8 +4216,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5837848609347805961}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000021327875, y: -0.99738944, z: 0.07221104, w: -0.000000012473839}
-  m_LocalPosition: {x: 3.0699997, y: 7.0499983, z: 9.830002}
+  m_LocalRotation: {x: 0.0000000010617682, y: -0.98836154, z: 0.1521233, w: 0.0000000068984147}
+  m_LocalPosition: {x: 3.0699997, y: 8.597057, z: 9.337173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4262,7 +4285,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  OrbitStyle: 1
+  OrbitStyle: 0
   Radius: 10
   Orbits:
     Top:
@@ -4289,7 +4312,7 @@ MonoBehaviour:
   VerticalAxis:
     Value: 17.5
     Center: 17.5
-    Range: {x: -10, y: 45}
+    Range: {x: -180, y: 180}
     Wrap: 0
     Recentering:
       Enabled: 0
