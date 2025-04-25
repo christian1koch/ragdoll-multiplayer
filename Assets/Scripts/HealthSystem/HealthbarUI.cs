@@ -8,11 +8,11 @@ public class HealthbarUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private AttributesManager attributes;
 
+    [SerializeField] private GameObject HPDisplayer;
     private void Start()
     {
         if (attributes != null)
         {
-            gameObject.SetActive(true);
             UpdateHealthUI(attributes.health.Value);
             attributes.health.OnValueChanged += (oldVal, newVal) =>
             {
@@ -21,7 +21,7 @@ public class HealthbarUI : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
+            HPDisplayer.SetActive(false);
         }
     }
 

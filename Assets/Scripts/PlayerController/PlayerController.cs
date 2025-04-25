@@ -76,7 +76,6 @@ public class PlayerController : NetworkBehaviour
             cam.tag = "Untagged";
             aimCam.enabled = false;
             followCam.enabled = false;
-
         }
         else
         {

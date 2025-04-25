@@ -17,6 +17,7 @@ public class RelayConnectionUI : MonoBehaviour
     [SerializeField] private Button clientButton;
     [SerializeField] private Button shutdownButton;
     [SerializeField] private TMP_InputField joinCodeInputField;
+    [SerializeField] private TMP_InputField playerNameInput;
     [SerializeField] private TMP_Text infoText;
 
     private async void Start()
@@ -45,9 +46,21 @@ public class RelayConnectionUI : MonoBehaviour
             infoText.text = "Already running.";
             return;
         }
+        var playerName = playerNameInput.text;
+        if (string.IsNullOrEmpty(playerName))
+        {
+            infoText.text = "Add a name";
+            return;
+        }
+        if (NetworkManager.Singleton.IsListening)
+        {
+            infoText.text = "Already running.";
+            return;
+        }
 
         try
         {
+            PlayerData.playerName = playerName;
             var allocation = await RelayService.Instance.CreateAllocationAsync(4);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
@@ -75,7 +88,12 @@ public class RelayConnectionUI : MonoBehaviour
         }
 
         string joinCode = joinCodeInputField.text.Trim();
-
+        var playerName = playerNameInput.text;
+        if (string.IsNullOrEmpty(playerName))
+        {
+            infoText.text = "Add a name";
+            return;
+        }
         if (string.IsNullOrEmpty(joinCode))
         {
             infoText.text = "Enter Join Code.";
@@ -84,6 +102,7 @@ public class RelayConnectionUI : MonoBehaviour
 
         try
         {
+            PlayerData.playerName = playerName;
             var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
             var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
