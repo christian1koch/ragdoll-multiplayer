@@ -1,29 +1,33 @@
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
-using Unity.Services.Lobbies.Models;
-using UnityEngine;
 
 public class PlayerDisplayer : NetworkBehaviour
 {
     public TMP_Text playerNameText;
 
-    private NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>();
+    private NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public override void OnNetworkSpawn()
     {
-        if (IsOwner && IsClient)
-        {
-            SetNameServerRpc(PlayerData.playerName);
-        }
-
         playerName.OnValueChanged += (oldName, newName) =>
         {
             playerNameText.text = newName.ToString();
         };
-    }
 
-    [ServerRpc]
-    void SetNameServerRpc(string newName)
+
+
+        if (IsOwner)
+        {
+            SetName(PlayerData.playerName);
+        }
+
+        else
+        {
+            playerNameText.text = playerName.Value.ToString();
+        }
+
+    }
+    void SetName(string newName)
     {
         playerName.Value = newName;
     }
