@@ -28,8 +28,8 @@ public class WallWalker : NetworkBehaviour
         if (allRigidbodies.Count == 0)
             allRigidbodies.AddRange(GetComponentsInChildren<Rigidbody>());
 
-        foreach (var rb in allRigidbodies)
-            rb.useGravity = false;  // Disable built-in gravity
+        // foreach (var rb in allRigidbodies)
+        //     rb.useGravity = false;  // Disable built-in gravity
     }
 
     void Update()
@@ -49,18 +49,18 @@ public class WallWalker : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsServer) return;
+        // if (!IsServer) return;
 
-        foreach (var rb in allRigidbodies)
-        {
-            rb.AddForce(currentGravity * gravityStrength, ForceMode.Acceleration);
-        }
+        // foreach (var rb in allRigidbodies)
+        // {
+        //     rb.AddForce(currentGravity * gravityStrength, ForceMode.Acceleration);
+        // }
 
-        if (isWallWalking)
-        {
-            Quaternion targetRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.forward, GravityUp), GravityUp);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, Time.fixedDeltaTime * 5f));
-        }
+        // if (isWallWalking)
+        // {
+        //     Quaternion targetRot = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.forward, GravityUp), GravityUp);
+        //     rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, Time.fixedDeltaTime * 5f));
+        // }
     }
 
     private void TryAttachToWall()
@@ -96,15 +96,15 @@ public class WallWalker : NetworkBehaviour
     }
 
     // Optional: auto detach when stamina is low
-    private void LateUpdate()
-    {
-        if (!IsServer) return;
+    // private void LateUpdate()
+    // {
+    //     if (!IsServer) return;
 
-        if (isWallWalking && attributes.stamina < 1f)
-        {
-            currentGravity = Vector3.down;
-            isWallWalking = false;
-            Debug.Log("Auto-detached due to low stamina.");
-        }
-    }
+    //     if (isWallWalking && attributes.stamina < 1f)
+    //     {
+    //         currentGravity = Vector3.down;
+    //         isWallWalking = false;
+    //         Debug.Log("Auto-detached due to low stamina.");
+    //     }
+    // }
 }
